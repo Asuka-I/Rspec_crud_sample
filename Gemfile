@@ -23,6 +23,8 @@ group :development, :test do
   # デバッグ用
   gem 'pry-byebug'
   gem 'pry-doc'
+
+  gem 'rails-i18n', '~> 6.0.0'
 end
 
 group :development do
