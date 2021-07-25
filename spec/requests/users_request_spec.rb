@@ -111,7 +111,7 @@ RSpec.describe "Users", type: :request do
   # 編集ページ
   describe "GET #edit" do
     subject { get(edit_user_path(user_id)) }
-    
+
     context "ユーザーが存在するとき" do
       let(:user) { create(:user) }
       let(:user_id) { user.id }
@@ -206,6 +206,28 @@ RSpec.describe "Users", type: :request do
       it "編集ページがレンダリングされる" do
         subject
         expect(response.body).to include "編集"
+      end
+    end
+  end
+
+  # 削除
+  describe "DELETE #destroy" do
+    subject { delete(user_path(user.id)) }
+    let!(:user) { create(:user) }
+
+    context "パラメータが正常な場合" do
+      it "リクエストが成功する" do
+        subject
+        expect(response).to have_http_status(302)
+      end
+
+      it "ユーザーが削除される" do
+        expect { subject }.to change(User, :count).by(-1)
+      end
+
+      it "ユーザー一覧にリダイレクトすること" do
+        subject
+        expect(response).to redirect_to(users_path)
       end
     end
   end
